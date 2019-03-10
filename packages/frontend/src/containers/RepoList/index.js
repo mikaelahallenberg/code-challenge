@@ -1,35 +1,79 @@
 import React, { Component } from 'react';
 import { number, string, func, shape, bool, arrayOf } from 'prop-types';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
 import { fetchUserRepos } from '../../actions';
 import RepoList from '../../components/RepoList';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
+const Container = styled.section`
+  display: flex;
+  justify-content: center;
+  padding: 1em;
+`;
+
+const Wrapper = styled.div`
+  max-width: 37.5em;
+  margin: 0 auto;
+`;
+
+const Button = styled.button`
+  margin-top: 3em;
+  padding: 0.8em 2em;
+  border-radius: 20px;
+  border: 2px solid #519129;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  background-color: #fff;
+  color: #519129;
+`;
 class RepoListContainer extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchUserRepos(this.props.username));
+    this.props.dispatch(fetchUserRepos(this.props.token, this.props.username));
   }
-  fetchMore = () => {
-    this.props.dispatch(fetchUserRepos(this.props.username));
-  };
-  render() {
-    const { loading, error, data, username, ...rest } = this.props;
 
+  fetchMore() {
+    this.props.dispatch(
+      fetchUserRepos(
+        this.props.token,
+        this.props.username,
+        this.props.nextPage,
+      ),
+    );
+  }
+
+  render() {
+    const {
+      loading,
+      error,
+      data,
+      token,
+      username,
+      isLastPage,
+      ...rest
+    } = this.props;
     if (error) {
       return <div>{error}</div>;
     }
 
     return [
       loading && <LoadingSpinner key="loading" />,
-      data.length > 0 && (
-        <RepoList
-          data={data}
-          username={username}
-          fetchMore={this.fetchMore}
-          {...rest}
-          key="RepoList"
-        />
-      ),
+      <Container key="RepoListContainer">
+        <Wrapper>
+          {data !== null && data.length > 0 && (
+            <RepoList
+              username={username}
+              data={data}
+              fetchMore={this.fetchMore}
+              {...rest}
+              key="RepoList"
+            />
+          )}
+          {!loading && !isLastPage ? (
+            <Button onClick={e => this.fetchMore(e)}>Load more</Button>
+          ) : null}
+        </Wrapper>
+      </Container>,
     ];
   }
 }
@@ -38,6 +82,8 @@ RepoListContainer.propTypes = {
   dispatch: func.isRequired,
   username: string.isRequired,
   loading: bool.isRequired,
+  isLastPage: bool.isRequired,
+  nextPage: string.isRequired,
   error: string,
   data: arrayOf(
     shape({
@@ -45,6 +91,7 @@ RepoListContainer.propTypes = {
       name: string,
       html_url: string,
       language: string,
+      description: string,
     }),
   ),
 };
@@ -54,6 +101,11 @@ RepoListContainer.defaultProps = {
   data: null,
 };
 
-const mapStateToProps = /* TODO: mapStateToProps should get the repo data from the store */
+const mapStateToProps = state => ({
+  loading: state.RepoList.loading,
+  data: state.RepoList.data,
+  isLastPage: state.RepoList.isLastPage,
+  nextPage: state.RepoList.nextPage,
+});
 
 export default connect(mapStateToProps)(RepoListContainer);

@@ -1,11 +1,13 @@
-import parseLinkHeaders from 'parse-link-header';
-
 export const FETCH_START = '@fetch/start';
 export const FETCH_ERROR = '@fetch/error';
 export const FETCH_SUCCESS = '@fetch/success';
 
-const fetchStart = () => ({
+const parse = require('parse-link-header');
+
+const fetchStart = (username, token) => ({
   type: FETCH_START,
+  username,
+  token,
 });
 
 const fetchError = error => ({
@@ -13,31 +15,45 @@ const fetchError = error => ({
   error,
 });
 
-const fetchSuccess = ({ nextPage, data }) => ({
+const fetchSuccess = (nextPage, isLastPage, data) => ({
   type: FETCH_SUCCESS,
   nextPage,
+  isLastPage,
   data,
 });
 
-/**
- * Fetches repositories asyncronously for the given username, see {@link https://developer.github.com/v3/repos/#list-user-repositories}
- * @param { string } username - username to fetch
- */
-export const fetchUserRepos = username => async (dispatch, getState) => {
+export const fetchUserRepos = token => async (dispatch, getState) => {
   dispatch(fetchStart());
-  // @TODO: I might want to use `fetch` for this...
-  // @TODO: I need a GitHub API key as for this to work in .env...
-  // https://developer.github.com/apps/building-oauth-apps/
-  // @TODO: We must handle pagination too...
-  // https://developer.github.com/v3/guides/traversing-with-pagination/
-  // parse-link-header package looks nice?
-  // @TODO we want to get the `nextPage` from state?
+  const state = getState().RepoList;
 
-  const { REACT_APP_GITHUB_API_KEY: token } = process.env;
-
-  try {
-    throw new Error('Not implemented (actions/RepoList/index.js)');
-  } catch (error) {
-    dispatch(fetchError(error.message));
-  }
+  return fetch(state.nextPage, {
+    headers: {
+      Authorization: `token ${token}`,
+    },
+  }).then(res => {
+    if (res.status !== 200) {
+      console.log(`There was a problem, code: ${res.status}`);
+      return;
+    }
+    const linkHeader = res.headers.get('link');
+    const parsed = parse(linkHeader);
+    const next = parsed.next != null ? parsed.next.url : '';
+    res.json().then(
+      data =>
+        dispatch(
+          fetchSuccess(
+            next,
+            next === '',
+            data.map(item => ({
+              id: item.id,
+              name: item.name,
+              html_url: item.html_url,
+              language: item.language,
+              description: item.description,
+            })),
+          ),
+        ),
+      error => dispatch(fetchError(error)),
+    );
+  });
 };

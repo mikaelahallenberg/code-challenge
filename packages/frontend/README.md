@@ -1,3 +1,18 @@
+# PLEASE READ
+
+Due to Cors compliancy issues,
+authentication was done differently than instructed.
+(https://stackoverflow.com/questions/42150075/cors-issue-on-github-oauth)
+
+I didn't want to have authentication keys in the front end even for
+this project so I have implemented a quick & very dirty way to get around this.
+
+In order to login, clone this
+https://github.com/prose/gatekeeper
+and follow instructions.
+
+It's not perfect but it's something ¯\_(ツ)\_/¯
+
 # Code challenge - frontend
 
 This code challenge tests your frontend skills.
@@ -15,13 +30,13 @@ finished! Oh no! Your task is to:
 
 ### MVP
 
-* Can show a initial list of the repositories the user has, including:
-  * Link to the repo
-  * Name of the repo
-  * Description
-  * Language
-* Can paginate through all the repositories by pressing a `Load more` button
-* Tests pass
+- Can show a initial list of the repositories the user has, including:
+  - Link to the repo
+  - Name of the repo
+  - Description
+  - Language
+- Can paginate through all the repositories by pressing a `Load more` button
+- Tests pass
 
 ### The layout
 
@@ -33,20 +48,20 @@ There's also a [Figma layout for it](https://www.figma.com/file/QGzYD0dU67oFpzNE
 
 ### Hints
 
-* This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app), so if you are familiar
+- This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app), so if you are familiar
   with CRA, you are in luck! Otherwise you might want to [get familiar with it first](<(https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md)>).
 
-* The tests are done with [Jest](https://facebook.github.io/jest/) and [Enzyme](http://airbnb.io/enzyme/), but you can use plain [React TestUtilities](https://reactjs.org/docs/test-utils.html) or something like [`react-testing-library`](https://github.com/kentcdodds/react-testing-library)
+- The tests are done with [Jest](https://facebook.github.io/jest/) and [Enzyme](http://airbnb.io/enzyme/), but you can use plain [React TestUtilities](https://reactjs.org/docs/test-utils.html) or something like [`react-testing-library`](https://github.com/kentcdodds/react-testing-library)
   too.
 
-* You'll need [a GitHub account to get the API token](https://developer.github.com/v3/auth/#basic-authentication). See [settings/tokens](https://github.com/settings/tokens).
+- You'll need [a GitHub account to get the API token](https://developer.github.com/v3/auth/#basic-authentication). See [settings/tokens](https://github.com/settings/tokens).
 
-* The project uses [`styled-components`](https://www.styled-components.com/) for the CSS(-in-js), because most of our projects have also used it. Same with [`redux`](https://github.com/reduxjs/redux) and [`redux-thunk`](https://github.com/reduxjs/redux-thunk),
+- The project uses [`styled-components`](https://www.styled-components.com/) for the CSS(-in-js), because most of our projects have also used it. Same with [`redux`](https://github.com/reduxjs/redux) and [`redux-thunk`](https://github.com/reduxjs/redux-thunk),
   but you can get rid of both or replace them with some other state management system you want to.
 
-* You will find that the project is _really_ incomplete, as in it might actually be _completely_ broken, but that's expected. Debugging is part of the job and ask for help if you get stuck.
+- You will find that the project is _really_ incomplete, as in it might actually be _completely_ broken, but that's expected. Debugging is part of the job and ask for help if you get stuck.
 
-* This project uses [our styleguide](https://github.com/motleyagency/eslint-config-motley), which might not fit 100% to your current coding style. Not to worry, we are quite flexible with it and formatting is handled by
+- This project uses [our styleguide](https://github.com/motleyagency/eslint-config-motley), which might not fit 100% to your current coding style. Not to worry, we are quite flexible with it and formatting is handled by
   Prettier in _pre-commit_ phase.
 
 ### Bonus points

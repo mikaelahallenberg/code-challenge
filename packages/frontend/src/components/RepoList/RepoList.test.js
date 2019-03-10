@@ -34,13 +34,11 @@ beforeEach(() => {
 });
 
 it('renders a title', () => {
-  const title /* @TODO Get the title */ = expect(title.text()).toEqual(
-    'petetnt – repos',
-  );
+  const title = expect(data.title.text()).toEqual('petent – repos');
 });
 
 it('renders a repo names', () => {
-  const names /* @TODO Get the repo name */ = expect(names.length).toEqual(2);
+  const names = expect(names.length).toEqual(2);
   expect(names.at(0).text()).toEqual('Test');
   expect(names.at(1).text()).toEqual('Test 2');
 });
@@ -56,5 +54,6 @@ it('renders load more button if there is more to load', () => {
 });
 
 it('does not renders load more button if there is nothing to load', () => {
+  expect(isLastPage).toEqual(true);
   throw new Error('test not implemented');
 });

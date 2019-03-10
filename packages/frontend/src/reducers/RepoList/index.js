@@ -4,7 +4,7 @@ const initialState = {
   loading: true,
   error: null,
   data: [],
-  nextPage: null,
+  nextPage: 'https://api.github.com/user/repos?type=all&per_page=1',
   isLastPage: false,
 };
 
@@ -24,10 +24,15 @@ export default (state = initialState, action) => {
         error: action.error,
       };
     }
-    // @TODO: Implement FETCH_SUCCESS handler. On success, you should apply proper loading/error
-    // states, and adjust the other data/variables needed for the container in containers/RepoList
     case FETCH_SUCCESS: {
-      throw new Error('Not implemented');
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        nextPage: action.nextPage,
+        isLastPage: action.isLastPage,
+        data: state.data.concat(action.data),
+      };
     }
     default:
       return state;
