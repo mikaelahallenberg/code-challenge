@@ -50,11 +50,7 @@ class App extends React.Component {
         ) : (
           <Provider store={store}>
             <ErrorBoundary>
-              <RepoList
-                token={this.state.token}
-                username="mikaelahallenberg"
-                loading
-              />
+              <RepoList token={this.state.token} loading />
             </ErrorBoundary>
           </Provider>
         )}

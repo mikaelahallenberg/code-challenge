@@ -4,9 +4,8 @@ export const FETCH_SUCCESS = '@fetch/success';
 
 const parse = require('parse-link-header');
 
-const fetchStart = (username, token) => ({
+const fetchStart = token => ({
   type: FETCH_START,
-  username,
   token,
 });
 

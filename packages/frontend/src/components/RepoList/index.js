@@ -30,9 +30,9 @@ const LanguageWrapper = styled.div`
 `;
 
 const RepoList = props => {
-  const { data, username } = props;
+  const { data } = props;
   return [
-    <h1 key="RepoList">{username} - repos</h1>,
+    <h1 key="RepoList">Your repos</h1>,
     data.map(item => (
       <RepoListWrapper key={item.id}>
         <a href={item.html_url} target="_blank" rel="noopener noreferrer">
@@ -51,7 +51,6 @@ const RepoList = props => {
 };
 
 RepoList.propTypes = {
-  username: string.isRequired,
   data: arrayOf(
     shape({
       id: number,

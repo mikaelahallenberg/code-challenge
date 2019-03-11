@@ -29,29 +29,15 @@ const Button = styled.button`
 `;
 class RepoListContainer extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchUserRepos(this.props.token, this.props.username));
+    this.props.dispatch(fetchUserRepos(this.props.token));
   }
 
   fetchMore() {
-    this.props.dispatch(
-      fetchUserRepos(
-        this.props.token,
-        this.props.username,
-        this.props.nextPage,
-      ),
-    );
+    this.props.dispatch(fetchUserRepos(this.props.token, this.props.nextPage));
   }
 
   render() {
-    const {
-      loading,
-      error,
-      data,
-      token,
-      username,
-      isLastPage,
-      ...rest
-    } = this.props;
+    const { loading, error, data, token, isLastPage, ...rest } = this.props;
     if (error) {
       return <div>{error}</div>;
     }
@@ -62,7 +48,6 @@ class RepoListContainer extends Component {
         <Wrapper>
           {data !== null && data.length > 0 && (
             <RepoList
-              username={username}
               data={data}
               fetchMore={this.fetchMore}
               {...rest}
@@ -80,7 +65,6 @@ class RepoListContainer extends Component {
 
 RepoListContainer.propTypes = {
   dispatch: func.isRequired,
-  username: string.isRequired,
   loading: bool.isRequired,
   isLastPage: bool.isRequired,
   nextPage: string.isRequired,
